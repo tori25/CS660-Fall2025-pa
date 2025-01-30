@@ -21,6 +21,7 @@ namespace db {
     };
 
     class TupleDesc {
+        // TODO pa1: add private members
 
     public:
         TupleDesc() = default;

@@ -16,6 +16,8 @@ namespace db {
         mutable std::vector<size_t> reads;
         mutable std::vector<size_t> writes;
 
+        // TODO pa1: add private members
+
     protected:
         const std::string name;
         const TupleDesc td;
