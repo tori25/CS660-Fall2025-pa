@@ -94,7 +94,7 @@ found [here](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake
 Navigate to the directory where you cloned the repo
 
 ```sh
-cd [folder name]
+cd cs660-Spring2025-pa
 ```
 
 Create a build directory and navigate to it
