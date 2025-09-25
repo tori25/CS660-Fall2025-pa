@@ -1,8 +1,8 @@
 #pragma once
-
 #include <db/BufferPool.hpp>
 #include <db/DbFile.hpp>
 #include <memory>
+#include <unordered_map>
 
 /**
  * @brief A database is a collection of files and a BufferPool.
@@ -15,9 +15,13 @@ namespace db {
     class Database {
         // TODO pa0: add private members
 
+    private:
         BufferPool bufferPool;
 
-        Database() = default;
+        // Catalog of files: map file name → owned DbFile
+        std::unordered_map<std::string, std::unique_ptr<DbFile>> files;
+
+        Database() : bufferPool(DEFAULT_NUM_PAGES) {};
 
     public:
         friend Database &getDatabase();
@@ -30,6 +34,7 @@ namespace db {
 
         void operator=(Database &&) = delete;
 
+        void clear();
         /**
          * @brief Provides access to the singleton instance of the BufferPool.
          * @return The buffer pool

@@ -18,12 +18,21 @@ namespace db {
  */
     class BufferPool {
         // TODO pa0: add private members
+    private:
+        size_t capacity;
+
+        std::unordered_map<PageId, Page> pages; //  Track cached pages
+
+        std::unordered_set<PageId> dirtyPages; // Track dirty pages
+
+        std::list<PageId> lru;  // Track usage order for eviction (simple LRU)
 
     public:
+        void clear();
         /**
          * @brief: Constructs a BufferPool object with the default number of pages.
          */
-        explicit BufferPool();
+        explicit BufferPool(size_t capacity);
 
         /**
          * @brief: Destructs a BufferPool object after flushing all dirty pages to disk.
