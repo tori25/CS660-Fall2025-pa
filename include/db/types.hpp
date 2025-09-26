@@ -32,8 +32,8 @@ namespace db {
 } // namespace db
 
 template<>
-struct std::hash<db::PageId> {
-    std::size_t operator()(const db::PageId &r) const noexcept {
-        return std::hash<std::string>()(r.file) ^ (std::hash<size_t>()(r.page) << 1);
+struct std::hash<const db::PageId> {
+    std::size_t operator()(const db::PageId &r) const {
+        return std::hash<std::string>()(r.file) ^ std::hash<size_t>()(r.page);
     }
 };

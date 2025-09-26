@@ -2,11 +2,18 @@
 
 #include <db/types.hpp>
 #include <list>
-#include <unordered_map>
-#include <unordered_set>
+#include <map>
 #include <vector>
 
 namespace db {
+
+    struct PageIdLess {
+        bool operator()(const PageId &a, const PageId &b) const {
+            if (a.file != b.file) return a.file < b.file;
+            return a.page < b.page;
+        }
+    };
+
     constexpr size_t DEFAULT_NUM_PAGES = 50;
 
 /**
@@ -17,22 +24,18 @@ namespace db {
  * @note A BufferPool owns the Page objects that are stored in it.
  */
     class BufferPool {
-        // TODO pa0: add private members
     private:
-        size_t capacity;
-
-        std::unordered_map<PageId, Page> pages; //  Track cached pages
-
-        std::unordered_set<PageId> dirtyPages; // Track dirty pages
-
-        std::list<PageId> lru;  // Track usage order for eviction (simple LRU)
+        std::array<Page, DEFAULT_NUM_PAGES> pages;      // actual page storage
+        std::array<bool, DEFAULT_NUM_PAGES> used;       // slot occupancy
+        std::array<bool, DEFAULT_NUM_PAGES> dirty;      // slot dirty flags
+        std::list<size_t> lru;                          // LRU order of slots
+        std::map<PageId, size_t, PageIdLess> pageTable;
 
     public:
-        void clear();
         /**
          * @brief: Constructs a BufferPool object with the default number of pages.
          */
-        explicit BufferPool(size_t capacity);
+        explicit BufferPool();
 
         /**
          * @brief: Destructs a BufferPool object after flushing all dirty pages to disk.

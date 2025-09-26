@@ -2,25 +2,21 @@
 
 using namespace db;
 
-BufferPool &Database::getBufferPool()
-{
-    return bufferPool;
-}
+BufferPool &Database::getBufferPool() { return bufferPool; }
 
 Database &db::getDatabase() {
     static Database instance;
     return instance;
 }
-void Database::add(std::unique_ptr<DbFile> file) {
-    // TODO pa0
-    const std::string &name = file->getName();  // Assuming DbFile has getName()
 
-    // Check if this file already exists
+void Database::add(std::unique_ptr<DbFile> file) {
+    const std::string &name = file->getName();
+
+    // If already exists, throw (tests expect this)
     if (files.find(name) != files.end()) {
-        throw std::logic_error("File with name '" + name + "' already exists.");
+        throw std::invalid_argument("File already exists in database: " + name);
     }
 
-    // Insert into the map (ownership transferred)
     files[name] = std::move(file);
 }
 
@@ -31,7 +27,7 @@ std::unique_ptr<DbFile> Database::remove(const std::string &name) {
         throw std::logic_error("File with name '" + name + "' does not exist.");
     }
 
-    // 2. Flush dirty pages of this file
+    // 2. Flush dirty pages for this file (important!)
     bufferPool.flushFile(name);
 
     // 3. Transfer ownership back to caller
@@ -44,14 +40,11 @@ std::unique_ptr<DbFile> Database::remove(const std::string &name) {
 }
 
 DbFile &Database::get(const std::string &name) const {
+    // TODO pa0
     auto it = files.find(name);
     if (it == files.end()) {
         throw std::logic_error("File with name '" + name + "' does not exist.");
     }
     return *(it->second);
-}
 
-void Database::clear() {
-    files.clear();
-    bufferPool.clear();   // reset contents without reassigning
 }
