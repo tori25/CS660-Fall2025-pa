@@ -1,4 +1,5 @@
 #pragma once
+
 #include <db/BufferPool.hpp>
 #include <db/DbFile.hpp>
 #include <memory>
@@ -15,12 +16,9 @@ namespace db {
         // TODO pa0: add private members
         std::unordered_map<std::string, std::unique_ptr<DbFile>> files;
 
-    private:
         BufferPool bufferPool;
 
-        std::unordered_map<std::string, std::unique_ptr<DbFile>> files;
-
-        Database() : bufferPool() {};
+        Database() = default;
 
     public:
         friend Database &getDatabase();

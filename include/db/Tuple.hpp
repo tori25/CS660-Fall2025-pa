@@ -22,6 +22,9 @@ namespace db {
 
     class TupleDesc {
         // TODO pa1: add private members
+    private:
+        std::vector<type_t> types;
+        std::vector<std::string> names;
 
     public:
         TupleDesc() = default;
