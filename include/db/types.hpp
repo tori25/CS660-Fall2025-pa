@@ -5,6 +5,7 @@
 #include <utility>
 #include <variant>
 #include <cstdint>
+#include <functional>
 
 namespace db {
     constexpr size_t INT_SIZE = sizeof(int);
