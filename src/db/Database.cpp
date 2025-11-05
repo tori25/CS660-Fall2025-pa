@@ -13,7 +13,11 @@ void Database::add(std::unique_ptr<DbFile> file) {
     // TODO pa0
     const std::string &name = file->getName();
     if (files.contains(name)) {
-        throw std::logic_error("File already exists");
+        // If a file with this name already exists, remove it first
+        // This handles the case where tests delete the physical file
+        // but the Database still has the old file object registered
+        bufferPool.flushFile(name);
+        files.erase(name);
     }
     files[name] = std::move(file);
 }
