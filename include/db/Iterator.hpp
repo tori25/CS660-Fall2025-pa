@@ -25,6 +25,6 @@ namespace db {
 
         bool operator==(const Iterator &other) const { return page == other.page && slot == other.slot; }
 
-        bool operator!=(const Iterator &) const = default;
+        bool operator!=(const Iterator &other) const { return !(*this == other); }
     };
-} // namespace db
+}
