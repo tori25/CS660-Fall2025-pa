@@ -7,12 +7,12 @@ namespace db {
 
   class ColumnStats {
   private:
-    std::vector<size_t> buckets_;   // Histogram buckets
-    int min_;
-    int max_;
-    unsigned num_buckets_;
-    int bucket_width_;              // Width of each bucket (MUST BE INT)
-    size_t total_count_;            // Total values added
+    std::vector<size_t> buckets_;   // histogram buckets
+    int min_;                       // minimum value
+    int max_;                       // maximum value
+    unsigned num_buckets_;          // number of buckets
+    int bucket_width_;              // INTEGER bucket width
+    size_t total_count_;            // total values added
 
   public:
     ColumnStats(unsigned buckets, int min, int max);
@@ -22,4 +22,4 @@ namespace db {
     size_t estimateCardinality(PredicateOp op, int v) const;
   };
 
-}
+} // namespace db
